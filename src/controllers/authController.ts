@@ -1,25 +1,38 @@
 import type { Response, Request } from "express";
 import { users } from "../models/user";
 import type { User } from "../models/user.js";
+import { validateEmailandPass, hashPassword } from "../utils/utils";
+import e from "express";
 
-export const register = (req: Request, res: Response) => {
+export const register = async (req: Request, res: Response) => {
 const { email, password } = req.body;
 
     if (!email || !password) {
         return res.status(400).json({ message: "Email e senha sao obrigatorios" });
     }
-    
+    if(!validateEmailandPass(email, password)){
+        return res.status(400).json({ message: "Email ou senha invalidos!!" });
+    }
+
     if (users.find(u => u.email === email)) {
         return res.status(400).json({ message: "Usuario ja existe" });
     }
-
+    const hashedPassword = await hashPassword(password);
     const newUser: User = {
         id: users.length + 1,
         email,
-        password
+        password: hashedPassword
     }
 
     users.push(newUser);
+    res.status(201).json({ message: "Usuário registrado com sucesso, hash: " + hashedPassword });
+}
 
-    res.status(201).json({ message: "Usuário registrado com sucesso" });
+export const login = async (req: Request, res: Response) => {
+    const { email, password } = req.body;
+
+    const user = users.find(u => u.email == email && u.password == password)
+    if(!user){
+        return res.status(400).json({ message: "Credenciais Invalidas"})
+    }
 }
