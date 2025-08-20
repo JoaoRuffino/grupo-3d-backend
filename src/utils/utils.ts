@@ -10,7 +10,7 @@ export const validateEmailandPass = (email: string, password: string) => {
 export const hashPassword = async (password: string) => {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds); // Generate a salt
-    const hashedPassword = await bcrypt.hash(password, salt); // Hash the password
+    const hashedPassword: string = await bcrypt.hash(password, salt); // Hash the password
     return hashedPassword; // Return the hashed password
 }
 

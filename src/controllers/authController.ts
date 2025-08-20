@@ -1,9 +1,12 @@
 import type { Response, Request } from "express";
 import { users } from "../models/user";
 import type { User } from "../models/user.js";
-import { validateEmailandPass, hashPassword } from "../utils/utils";
+import { validateEmailandPass, hashPassword, comparePassword } from "../utils/utils";
 import e from "express";
+import * as dotenv from "dotenv-safe";
+import jwt from "jsonwebtoken"
 
+dotenv.config();
 export const register = async (req: Request, res: Response) => {
 const { email, password } = req.body;
 
@@ -25,14 +28,24 @@ const { email, password } = req.body;
     }
 
     users.push(newUser);
-    res.status(201).json({ message: "Usuário registrado com sucesso, hash: " + hashedPassword });
+    res.status(201).json({ message: "Usuário registrado com sucesso" });
 }
 
 export const login = async (req: Request, res: Response) => {
     const { email, password } = req.body;
-
-    const user = users.find(u => u.email == email && u.password == password)
+    const JWT_SECRET = process.env.JWT_SECRET as string;
+    const JWT_EXPIRES = process.env.JWT_EXPIRES as string;
+    const user = users.find(u => u.email == email)
     if(!user){
         return res.status(400).json({ message: "Credenciais Invalidas"})
     }
+    if(await comparePassword(password, user.password)){
+        const userId = user.id
+        const token = jwt.sign({ userId }, JWT_SECRET, {
+            expiresIn: parseInt(JWT_EXPIRES!)
+        })
+        return res.status(200).json({ token: token})
+    }
+    res.status(400).json({ message: "Errooooo" });
+
 }
