@@ -41,8 +41,6 @@
     "noUncheckedSideEffectImports": true,
     "moduleDetection": "force",
     "skipLibCheck": true,
-
-
     "outDir": "./dist",
     "rootDir": "./src",
     "esModuleInterop": true,

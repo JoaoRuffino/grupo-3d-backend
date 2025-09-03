@@ -44,8 +44,8 @@ export const login = async (req: Request, res: Response) => {
         const token = jwt.sign({ userId }, JWT_SECRET, {
             expiresIn: parseInt(JWT_EXPIRES!)
         })
-        return res.status(200).json({ token: token})
+        return res.status(200).json({token})
     }
-    res.status(400).json({ message: "Errooooo" });
+    res.status(400).json({ message: "Credenciais Invalidas" });
 
 }
