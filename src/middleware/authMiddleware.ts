@@ -1,5 +1,6 @@
 import type { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
+import * as dotenv from "dotenv-safe";
 
 // Extendendo o Request para adicionar 'user'
 declare global {
@@ -9,6 +10,7 @@ declare global {
     }
   }
 }
+dotenv.config();
 
 export const authMiddleware = (req: Request, res: Response, next: NextFunction) => {
   const authHeader = req.headers['authorization'];

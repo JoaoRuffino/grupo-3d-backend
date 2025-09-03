@@ -7,10 +7,6 @@ let nextId = 1;
 
 export const createTravel = (req: Request, res: Response) => {
   const data: CreateTravelDTO = req.body;
-
-  if (!data.title || !data.initialDate || !data.plate || !data.contractor) {
-    return res.status(400).json({ error: "Campos de informações faltando!" });
-  }
   const newTravel: Travel = {
     id: nextId++,
     title: data.title,
