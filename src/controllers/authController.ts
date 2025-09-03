@@ -1,30 +1,24 @@
 import type { Response, Request } from "express";
 import { users } from "../models/user";
 import type { User } from "../models/user.js";
-import { validateEmailandPass, hashPassword, comparePassword } from "../utils/utils";
+import { hashPassword, comparePassword } from "../utils/utils";
 import e from "express";
 import * as dotenv from "dotenv-safe";
 import jwt from "jsonwebtoken"
 
 dotenv.config();
 export const register = async (req: Request, res: Response) => {
-const { email, password } = req.body;
-
-    if (!email || !password) {
-        return res.status(400).json({ message: "Email e senha sao obrigatorios" });
-    }
-    if(!validateEmailandPass(email, password)){
-        return res.status(400).json({ message: "Email ou senha invalidos!!" });
-    }
+const { email, password, username } = req.body;
 
     if (users.find(u => u.email === email)) {
-        return res.status(400).json({ message: "Usuario ja existe" });
+        return res.status(400).json({ message: "Usuario já existe" });
     }
     const hashedPassword = await hashPassword(password);
     const newUser: User = {
         id: users.length + 1,
         email,
-        password: hashedPassword
+        password: hashedPassword,
+        username
     }
 
     users.push(newUser);
