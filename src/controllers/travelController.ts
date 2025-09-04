@@ -13,7 +13,8 @@ export const createTravel = (req: Request, res: Response) => {
     initialDate: new Date(data.initialDate),
     isActive: true,
     plate: data.plate,
-    contractor: data.contractor
+    contractor: data.contractor,
+    initialKm: data.initialKm
   };
 
   travels.push(newTravel);
@@ -21,7 +22,7 @@ export const createTravel = (req: Request, res: Response) => {
 }
 
 export const updateTravel = (req: Request, res: Response) => {
-  const id = Number(req.params.id); //ID DA URL
+  const id = Number(req.params.travelId); //ID DA URL
   const data: UpdateTravelDTO = req.body;
 
   const travel = travels.find(t => t.id === id);

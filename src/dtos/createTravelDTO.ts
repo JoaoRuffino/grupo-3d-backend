@@ -5,6 +5,7 @@ export interface CreateTravelDTO {
   initialDate: Date;
   plate: string;
   contractor: string;
+  initialKm: number;
 }
 
 export type UpdateTravelDTO = Partial<Omit<Travel, "id">>;

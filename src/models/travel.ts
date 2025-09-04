@@ -11,6 +11,8 @@ export interface Travel {
     lunch?: Expense;
     initialDate: Date;
     endDate?: Date;
+    initialKm: number;
+    endKm?: number;
     distance?: number;
     isActive: boolean;
 }
